@@ -10,7 +10,7 @@ jobs:
   getpsresults:
     env:
       URL_TO_ANALYZE: http://example.com/
-      RESULTS_DIR: ps-reports
+      RESULTS_DIR: docs/img
     runs-on: ubuntu-latest
     steps:
     - name: Checkout code
