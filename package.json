@@ -4,9 +4,9 @@
   "description": "Generates a SVG of a given url's PageSpeed Insights statistics via a http endpoint or a cli command.",
   "main": "dist/app.js",
   "scripts": {
+    "psi-svg": "node dist/presentation/cli/index.js",
     "build": "tsc && tsc-alias",
-    "dev": "npm run build && npm run start",
-    "start": "node dist/presentation/server/index.js",
+    "start": "npm run build && node dist/presentation/server/index.js",
     "test": "test"
   },
   "repository": {

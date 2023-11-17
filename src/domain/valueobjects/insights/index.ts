@@ -5,7 +5,8 @@ export class Insights {
     InsightCategory,
     number
   >;
-  private pwa: PWAMetric = PWAMetric.NA;
+
+  private pwaScore: PWAMetric | undefined = undefined;
 
   constructor(
     performanceScore: number,
@@ -15,9 +16,11 @@ export class Insights {
     pwaScore?: number
   ) {
     this.numericScores[InsightCategory.PERFORMANCE] = performanceScore * 100;
+
     if (a11yScore) {
       this.numericScores[InsightCategory.ACCESSIBILITY] = a11yScore * 100;
     }
+
     if (bestPracticesScore) {
       this.numericScores[InsightCategory.BEST_PRACTICES] =
         bestPracticesScore * 100;
@@ -28,7 +31,7 @@ export class Insights {
     }
 
     if (pwaScore) {
-      this.pwa = this.parsePWAScore(pwaScore);
+      this.pwaScore = this.parsePWAScore(pwaScore);
     }
   }
 
@@ -36,8 +39,8 @@ export class Insights {
     return this.numericScores;
   }
 
-  public getPWAScore(): PWAMetric {
-    return this.pwa;
+  public getPWAScore(): PWAMetric | undefined {
+    return this.pwaScore;
   }
 
   private parsePWAScore(pwaScore: number): PWAMetric {

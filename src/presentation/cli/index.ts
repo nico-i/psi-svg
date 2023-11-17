@@ -17,7 +17,6 @@ const cliFlags = yargs
   .option("categories", {
     alias: "c",
     describe: "The categories of insights to fetch",
-    choices: Object.values(InsightCategory),
     type: "string",
   })
   .positional("url", {
@@ -39,6 +38,7 @@ if (!url || !outputDir) {
 
 const insightService = new InsightsService();
 const svgService = new SvgService(outputDir);
+
 
 const options = new Options(url, cliFlags.strategy, cliFlags.categories);
 

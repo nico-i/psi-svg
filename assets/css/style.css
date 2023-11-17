@@ -1,22 +1,18 @@
 .gauge-base {
   opacity: 0.1;
 }
-
 .gauge-arc {
   fill: none;
-  animation-delay: 250ms;
   stroke-linecap: round;
   transform: rotate(-90deg);
   transform-origin: 100px 60px;
   animation: load-gauge 1s ease forwards;
 }
-
 .guage-text {
   font-size: 40px;
   font-family: monospace;
   text-align: center;
 }
-
 .guage-red {
   color: #ff4e42;
   fill: #ff4e42;
@@ -37,21 +33,17 @@
   fill: #5c5c5c;
   stroke: #5c5c5c;
 }
-
 .guage-title {
   stroke: none;
   font-size: 26px;
   line-height: 26px;
   font-family: Roboto, Halvetica, Arial, sans-serif;
+  color: #737373;
+  fill: #737373;
 }
 .metric.guage-title {
   font-family: "Courier New", Courier, monospace;
 }
-.guage-title {
-  color: #737373;
-  fill: #737373;
-}
-
 @keyframes load-gauge {
   from {
     stroke-dasharray: 0 352.858;

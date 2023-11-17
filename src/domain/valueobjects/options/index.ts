@@ -2,8 +2,8 @@ import { validateWordCSVString } from "@util/helper";
 
 export class Options {
   private url: URL;
-  private strategy: InsightStrategy = InsightStrategy.MOBILE;
-  private categories: InsightCategory[] = Object.values(InsightCategory);
+  private strategy: InsightStrategy;
+  private categories: InsightCategory[];
 
   constructor(url: string, strategy?: string, categories?: string) {
     // url validation
@@ -32,6 +32,8 @@ export class Options {
       });
 
       this.categories = categoriesSplit as InsightCategory[];
+    } else {
+      this.categories = Object.values(InsightCategory);
     }
 
     // strategy validation
@@ -43,6 +45,8 @@ export class Options {
       }
 
       this.strategy = strategy as InsightStrategy;
+    } else {
+      this.strategy = InsightStrategy.MOBILE;
     }
   }
 

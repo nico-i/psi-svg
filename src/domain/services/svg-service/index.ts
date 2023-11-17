@@ -15,6 +15,58 @@ export class SvgService {
     }
   }
 
+  public generateInsightsSvg(insights: Insights): string {
+    const numericScores = insights.getNumericScoresByCategory();
+    const baseXOffset =
+      500 -
+      (Object.values(numericScores).length +
+        (insights.getPWAScore() ? 1 : 0)) *
+        100;
+    // Load base SVG
+    const baseSvg = fs.readFileSync("./assets/img/vector/base.svg", "utf8");
+    const dom = new JSDOM(baseSvg, { contentType: "image/svg+xml" });
+    const { document } = dom.window;
+    const baseSvgElement = document.querySelector("svg");
+    // Add CSS
+    const baseStyle = fs.readFileSync("./assets/css/style.css", "utf8");
+    const baseStyleElement = dom.window.document.createElement("style");
+    baseStyleElement.textContent = baseStyle;
+    baseSvgElement.innerHTML += baseStyleElement.outerHTML;
+
+    // Add gauges
+    const gaugeSVGs: string[] = [];
+    Object.entries(numericScores).forEach(([category, score], i) => {
+      gaugeSVGs.push(
+        this.getGaugeSvg(
+          category as InsightCategory,
+          score,
+          baseXOffset + i * 200
+        )
+      );
+    });
+    const pwaScore = insights.getPWAScore();
+    if (pwaScore) {
+      gaugeSVGs.push(
+        this.getPWASvg(
+          pwaScore,
+          baseXOffset + Object.values(numericScores).length * 200
+        )
+      );
+    }
+    gaugeSVGs.forEach((metricSvg) => {
+      baseSvgElement.innerHTML += metricSvg;
+    });
+    // Write to file if applicable
+    if (this.outputDir) {
+      fs.writeFileSync(
+        `${this.outputDir}/insights.svg`,
+        baseSvgElement.outerHTML
+      );
+    }
+
+    return baseSvgElement.outerHTML;
+  }
+
   private getGaugeCssClass(score: number): string {
     if (score >= 90) {
       return "guage-green";
@@ -89,53 +141,5 @@ export class SvgService {
     pwaSVGElement.setAttribute("x", xOffset);
 
     return pwaSVGElement.outerHTML;
-  }
-
-  public generateInsightsSvg(insights: Insights): string {
-    const numericScores = insights.getNumericScoresByCategory();
-    const baseXOffset =
-      500 -
-      (Object.values(numericScores).length +
-        (insights.getPWAScore() !== PWAMetric.NA ? 1 : 0)) *
-        100;
-
-    const baseSvg = fs.readFileSync("./assets/img/vector/base.svg", "utf8");
-    const dom = new JSDOM(baseSvg, { contentType: "image/svg+xml" });
-    const { document } = dom.window;
-    const baseSvgElement = document.querySelector("svg");
-
-    const metricSVGs: string[] = [];
-
-    Object.entries(numericScores).forEach(([category, score], i) => {
-      metricSVGs.push(
-        this.getGaugeSvg(
-          category as InsightCategory,
-          score,
-          baseXOffset + i * 200
-        )
-      );
-    });
-
-    if (insights.getPWAScore() !== PWAMetric.NA) {
-      metricSVGs.push(
-        this.getPWASvg(
-          insights.getPWAScore(),
-          baseXOffset + Object.values(numericScores).length * 200
-        )
-      );
-    }
-
-    metricSVGs.forEach((metricSvg) => {
-      baseSvgElement.innerHTML += metricSvg;
-    });
-
-    if (this.outputDir) {
-      fs.writeFileSync(
-        `${this.outputDir}/insights.svg`,
-        baseSvgElement.outerHTML
-      );
-    }
-
-    return baseSvgElement.outerHTML;
   }
 }
