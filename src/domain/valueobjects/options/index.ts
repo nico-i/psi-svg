@@ -8,7 +8,7 @@ export class Options {
 
   constructor(
     url: string,
-    showLegend?: boolean,
+    showLegend?: string,
     strategy?: string,
     categories?: string
   ) {
@@ -25,7 +25,13 @@ export class Options {
     }
 
     if (showLegend !== undefined) {
-      this.showLegend = showLegend;
+      try {
+        this.showLegend = JSON.parse(showLegend);
+      } catch (e) {
+        throw new DOMException(
+          "Failed to parse legend query parameter to boolean"
+        );
+      }
     }
 
     // strategy validation

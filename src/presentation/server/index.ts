@@ -3,22 +3,9 @@ import { InsightsService } from "@domain/services/insights-service";
 import { SvgService } from "@domain/services/svg-service";
 import { Options } from "@domain/valueobjects/options";
 import { validateWordCSVString } from "@util/helper";
-import { logger } from "@util/logger";
 import express from "express";
-const yargs = require("yargs");
 
 const app = express();
-
-const cliFlags = yargs
-  .usage("Usage: $0 [options]")
-  .option("port", {
-    alias: "p",
-    describe: "The port to start the server on",
-    default: 3000,
-    type: "number",
-  })
-  .help("h")
-  .alias("h", "help").argv;
 
 app.get("/", (req, res) => {
   const handleError = (e: unknown) => {
@@ -71,10 +58,10 @@ app.get("/", (req, res) => {
     }
     if (
       typeof req.query.legend !== "undefined" &&
-      typeof req.query.legend !== "boolean"
+      typeof req.query.legend !== "string"
     ) {
       throw new DOMException(
-        "Invalid showLegend query parameter type. Expected boolean"
+        "Invalid legend query parameter type. Expected string"
       );
     }
 
@@ -100,6 +87,4 @@ app.get("/", (req, res) => {
   }
 });
 
-app.listen(cliFlags.port, () => {
-  logger.info(`Server started. Listening on port ${cliFlags.port}`);
-});
+export default app;
