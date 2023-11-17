@@ -3,6 +3,7 @@
 }
 .gauge-arc {
   fill: none;
+  animation-delay: 250ms;
   stroke-linecap: round;
   transform: rotate(-90deg);
   transform-origin: 100px 60px;
