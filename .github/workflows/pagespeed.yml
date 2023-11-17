@@ -22,10 +22,14 @@ jobs:
     - name: Install Node.js
       uses: actions/setup-node@v2
 
+    - name: Install psi-svg
+      run: |
+        npm i -g psi-svg
+
     - name: Run npx command
       run: | # Have to be sure a folder is present if not, make it
-          npx psi-svg $URL_TO_ANALYZE $RESULTS_DIR/desktop.svg --strategy=desktop
-          npx psi-svg $URL_TO_ANALYZE $RESULTS_DIR/mobile.svg --strategy=mobile
+          psi-svg $URL_TO_ANALYZE $RESULTS_DIR/desktop.svg --strategy=desktop
+          psi-svg $URL_TO_ANALYZE $RESULTS_DIR/mobile.svg --strategy=mobile
     - name: Commit files
       run: |
         git add .
