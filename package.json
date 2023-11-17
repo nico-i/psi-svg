@@ -1,8 +1,8 @@
 {
   "name": "psi-svg",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Generates a SVG of a given url's PageSpeed Insights statistics via a http endpoint or a cli command.",
-  "main": "src/presentation/cli/index.ts",
+  "main": "dist/presentation/cli/index.js",
   "scripts": {
     "start": "ts-node -r tsconfig-paths/register ./src/presentation/cli/index.ts -s",
     "build": "tsc && tsc-alias",

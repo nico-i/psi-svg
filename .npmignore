@@ -1,9 +1,7 @@
-/docs
-/src
-/.git
+docs/**/*
+src/**/*
+.git/**/*
 
-.gitignore
 Dockerfile
 example.env
 tsconfig.json
-LICENSE
