@@ -3,15 +3,15 @@
 ![Example Insights for [https://inico.dev/](https://inico.dev/)](docs/img/inico-example.svg)
 
 ```bash
-npm install psi-svg
+npm i -g psi-svg
 ```
 
 ```bash
-bun install psi-svg
+bun i -g psi-svg
 ```
 
 ```bash
-yarn add psi-svg
+yarn global add psi-svg
 ```
 
 This node module performs a [Google PageSpeed Insights analysis](https://developers.google.com/speed/pagespeed/insights/) on a given webpage and returns the result as an SVG.
@@ -19,18 +19,6 @@ This node module performs a [Google PageSpeed Insights analysis](https://develop
 ## Prerequisites
 
 * [Node.js](https://nodejs.org/en/) and [npm](https://www.npmjs.com/) installed
-
-## Installation
-
-```bash
-npm install psi-svg
-```
-
-The module can also be installed globally to directly use it in the CLI:
-
-```bash
-npm install -g psi-svg
-```
 
 
 ## Usage
@@ -130,9 +118,10 @@ This project improves the original project in the following ways:
 * Added a CLI implementation
 * Added Docker compatibility
 * Removed unnecessary options which previously bloated the code
-* Better SVG generation independent with SVG-files instead of inline SVG strings
-* SVG styling CSS was also moved to an independent file to facilitate intellisense and linting
+* Better SVG generation with individual SVG-files instead of inline SVG strings
+* SVG styling CSS moved to an individual file to facilitate intellisense and linting
 * Improved the file structure with Domain Driven Design (DDD)
+* *TODO: Added automated tests*
 
 ## License
 
