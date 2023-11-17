@@ -6,12 +6,17 @@ import {
 } from "@domain/valueobjects/options";
 const { JSDOM } = require("jsdom");
 const fs = require("fs");
+const path = require("path");
 require("dotenv").config();
 
 export class SvgService {
+  private assetsDir: string;
   private outputPath: string | undefined;
 
   constructor(outputPath?: string) {
+    const currentFileDir = path.dirname(__filename);
+    this.assetsDir = `${currentFileDir}/../../../../assets`;
+
     if (outputPath) {
       this.outputPath = outputPath;
     }
@@ -36,7 +41,10 @@ export class SvgService {
     baseSvgElement.innerHTML += `<!-- PageSpeed Insights for ${options.getUrl()} -->`;
 
     // Add CSS
-    const baseStyle = fs.readFileSync("./assets/css/style.css", "utf8");
+    const baseStyle = fs.readFileSync(
+      `${this.assetsDir}/css/style.css`,
+      "utf8"
+    );
     const baseStyleElement = document.createElement("style");
     baseStyleElement.textContent = baseStyle;
     baseSvgElement.innerHTML += baseStyleElement.outerHTML;
@@ -68,7 +76,7 @@ export class SvgService {
     // Add legend
     if (options.getShowLegend()) {
       baseSvgElement.innerHTML += fs.readFileSync(
-        "./assets/img/vector/legend.svg",
+        `${this.assetsDir}/img/vector/legend.svg`,
         "utf8"
       );
     }
@@ -97,7 +105,10 @@ export class SvgService {
     score: number,
     xOffset: number
   ): string {
-    const gaugeSvg = fs.readFileSync("./assets/img/vector/gauge.svg", "utf8");
+    const gaugeSvg = fs.readFileSync(
+      `${this.assetsDir}/img/vector/gauge.svg`,
+      "utf8"
+    );
     const gaugeDom = new JSDOM(gaugeSvg, { contentType: "image/svg+xml" });
     const { document: gaugeDocument } = gaugeDom.window;
 
@@ -145,7 +156,7 @@ export class SvgService {
     }
 
     const pwaSvg = fs.readFileSync(
-      `./assets/img/vector/pwa/${pwaSvgFileName}`,
+      `${this.assetsDir}/img/vector/pwa/${pwaSvgFileName}`,
       "utf8"
     );
     const pwaDom = new JSDOM(pwaSvg, { contentType: "image/svg+xml" });
