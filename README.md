@@ -50,20 +50,21 @@ psi-svg https://www.example.com ./
 
 #### Flags
 
-| Flag                   | Description                                                                                         | Type                                                                   | Values                                                 |
-| ---------------------- | --------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------- | ------------------------------------------------------ |
-| `--port` or `-p`       | The port to listen on when running as a server. **Only applies when no other arguments are given!** | `int`                                                                  | `3000`                                                 |
-| `--strategy` or `-s`   | The strategy to use for the analysis.                                                               | `desktop` \| `mobile`                                                  | `mobile`                                               |
-| `--categories` or `-c` | The categories to include in the analysis as CSV.                                                   | `performance` \| `accessibility` \| `best-practices` \| `seo` \| `pwa` | `performance, accessibility, best-practices, seo, pwa` |
-| `--legend` or `-l`     | Whether to include the legend in the SVG.                                                           | `true` \| `false`                                                      | `true`                                                 |
+The following flags can be used to customize the analysis:
+
+| Flag                   | Description                                       | Type                                                                   | Values                                                 |
+| ---------------------- | ------------------------------------------------- | ---------------------------------------------------------------------- | ------------------------------------------------------ |
+| `--strategy` or `-s`   | The strategy to use for the analysis.             | `desktop` \| `mobile`                                                  | `mobile`                                               |
+| `--categories` or `-c` | The categories to include in the analysis as CSV. | `performance` \| `accessibility` \| `best-practices` \| `seo` \| `pwa` | `performance, accessibility, best-practices, seo, pwa` |
+| `--legend` or `-l`     | Whether to include the legend in the SVG.         | `true` \| `false`                                                      | `true`                                                 |
 
 #### npx
+
+The module can also be run without installing it by using `npx`:
 
 ```bash
 npx psi-svg https://www.example.com ./
 ```
-
-More info on npx can be found [here](https://docs.npmjs.com/cli/v7/commands/npx).
 
 ### Server
 

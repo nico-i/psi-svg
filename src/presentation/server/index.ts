@@ -1,4 +1,4 @@
-#!/usr/bin/env npx ts-node -r tsconfig-paths/register
+#!/usr/bin/env node
 import { InsightsService } from "@domain/services/insights-service";
 import { SvgService } from "@domain/services/svg-service";
 import { Options } from "@domain/valueobjects/options";

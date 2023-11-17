@@ -1,15 +1,16 @@
 {
   "name": "psi-svg",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "description": "Generates a SVG of a given url's PageSpeed Insights statistics via a http endpoint or a cli command.",
   "main": "src/presentation/cli/index.ts",
   "scripts": {
     "start": "ts-node -r tsconfig-paths/register ./src/presentation/cli/index.ts -s",
+    "build": "tsc && tsc-alias",
     "test": "test"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/nico-i/pagespeed-insight-gen.git"
+    "url": "git+https://github.com/nico-i/psi-svg.git"
   },
   "keywords": [
     "page",
@@ -41,13 +42,16 @@
     "express": "^4.18.2",
     "jsdom": "^22.1.0",
     "svg.js": "^2.7.1",
-    "ts-node": "^10.9.1",
-    "tsconfig-paths": "^4.2.0",
     "typescript": "^5.2.2",
     "winston": "^3.11.0",
     "yargs": "^17.7.2"
   },
+  "devDependencies": {
+    "tsc-alias": "^1.8.8",
+    "ts-node": "^10.9.1",
+    "tsconfig-paths": "^4.2.0"
+  },
   "bin": {
-    "psi-svg": "src/presentation/cli/index.ts"
+    "psi-svg": "dist/presentation/cli/index.js"
   }
 }
