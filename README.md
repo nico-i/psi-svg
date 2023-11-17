@@ -4,6 +4,8 @@
 
 ![Example Insights for https://inico.dev/](docs/img/inico-insights.svg)
 
+[![npm](https://nodei.co/npm/psi-svg.png?downloads=true)](https://www.npmjs.com/package/psi-svg)
+
 This node module performs a [Google PageSpeed Insights analysis](https://developers.google.com/speed/pagespeed/insights/) on a given webpage and returns the result as an SVG.
 
 ## Installation
@@ -14,7 +16,7 @@ This node module performs a [Google PageSpeed Insights analysis](https://develop
 npm i -g psi-svg
 ```
 
-[More info on `npm`](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm)
+[More info on `npm`](https://www.npmjs.com/)
 
 ### bun
 
