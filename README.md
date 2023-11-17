@@ -109,6 +109,16 @@ will return this SVG
 
 *Note: this analysis ran on the 17. November of 2023; the example page may be prone to change and the results may not be accurate anymore.*
 
+### Environment Variables
+
+The following environment variables can be used to customize the application:
+
+| Variable           | Description                                                                                                     | Values   | Default |
+| ------------------ | --------------------------------------------------------------------------------------------------------------- | -------- | ------- |
+| `DOMAIN_WHITELIST` | A comma-separated list of domains to allow requests from. Currently only supports domain name i.e. no wildcards | `string` | -       |
+
+Setting the `DOMAIN_WHITELIST` environment variable to `example` for example will allow requests from `https://example.com` and `https://example.org`. This is especially useful when running the web server in a public environment.
+
 ## Docker
 
 The application can also be run as a Docker container by following the following steps, although this requires [docker to be installed](https://docs.docker.com/engine/install/).
@@ -130,9 +140,6 @@ docker build -t psi-svg .
 ```bash
 docker run -p 3000:3000 psi-svg
 ```
-
-### Environment Variables
-
 
 ## Credits
 
