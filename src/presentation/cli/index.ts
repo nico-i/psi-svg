@@ -1,24 +1,13 @@
 #!/usr/bin/env node
 import { InsightsService } from "@domain/services/insights-service";
 import { SvgService } from "@domain/services/svg-service";
-import { InsightCategory, Options } from "@domain/valueobjects/options";
+import { Options } from "@domain/valueobjects/options";
 
 const yargs = require("yargs");
 
 // Define the command line options
 const cliFlags = yargs
   .usage("Usage: $0 <url> <output-dir> [options]")
-  .option("strategy", {
-    alias: "s",
-    describe: "The platform to use when analyzing the page",
-    choices: ["mobile", "desktop"],
-    type: "string",
-  })
-  .option("categories", {
-    alias: "c",
-    describe: "The categories of insights to fetch",
-    type: "string",
-  })
   .positional("url", {
     describe: "The URL to fetch insights for",
     type: "string",
@@ -27,6 +16,24 @@ const cliFlags = yargs
     describe: "The path to the output directory to save the final SVG file",
     type: "string",
   })
+  .option("legend", {
+    alias: "l",
+    describe: "Whether to show the legend in the SVG",
+    type: "boolean",
+  })
+  .option("strategy", {
+    alias: "s",
+    describe: "The platform to use when analyzing the page",
+    choices: ["mobile", "desktop"],
+    default: "mobile",
+    type: "string",
+  })
+  .option("categories", {
+    alias: "c",
+    describe: "The categories of insights to fetch",
+    type: "string",
+  })
+
   .help("h")
   .alias("h", "help").argv;
 
@@ -39,11 +46,17 @@ if (!url || !outputDir) {
 const insightService = new InsightsService();
 const svgService = new SvgService(outputDir);
 
+const options = new Options(
+  url,
+  cliFlags.legend,
+  cliFlags.strategy,
+  cliFlags.categories
+);
 
-const options = new Options(url, cliFlags.strategy, cliFlags.categories);
+console.log(`Options: ${JSON.stringify(options)}`);
 
 insightService.getPageSpeedInsights(options).then((insights) => {
-  svgService.generateInsightsSvg(insights);
+  svgService.generateInsightsSvg(insights, options.getShowLegend());
   console.log(
     `Successfully generated insights SVG in directory '${outputDir}'`
   );

@@ -3,9 +3,20 @@ import { SvgService } from "@domain/services/svg-service";
 import { Options } from "@domain/valueobjects/options";
 import { validateWordCSVString } from "@util/helper";
 import express from "express";
+const yargs = require("yargs");
 
 const app = express();
-const port = process.env.PORT || 3000;
+
+const cliFlags = yargs
+  .usage("Usage: $0 [options]")
+  .option("port", {
+    alias: "p",
+    describe: "The port to start the server on",
+    default: 3000,
+    type: "number",
+  })
+  .help("h")
+  .alias("h", "help").argv;
 
 app.get("/", (req, res) => {
   console.log("Received request");
@@ -50,9 +61,18 @@ app.get("/", (req, res) => {
         "Invalid categories query parameter type. Expected string"
       );
     }
+    if (
+      typeof req.query.legend !== "undefined" &&
+      typeof req.query.legend !== "boolean"
+    ) {
+      throw new DOMException(
+        "Invalid showLegend query parameter type. Expected boolean"
+      );
+    }
 
     const pageSpeedOptions = new Options(
       req.query.url,
+      req.query.legend,
       req.query.strategy,
       req.query.categories
     );
@@ -60,7 +80,12 @@ app.get("/", (req, res) => {
     const svgService = new SvgService();
 
     insightsService.getPageSpeedInsights(pageSpeedOptions).then((insights) => {
-      res.send(svgService.generateInsightsSvg(insights));
+      res.send(
+        svgService.generateInsightsSvg(
+          insights,
+          pageSpeedOptions.getShowLegend()
+        )
+      );
     });
   } catch (e) {
     if (e instanceof DOMException) {
@@ -71,6 +96,6 @@ app.get("/", (req, res) => {
   }
 });
 
-app.listen(port, () => {
-  console.log(`Server is listening on port ${port}`);
+app.listen(cliFlags.port, () => {
+  console.log(`Server started. Listening on port ${cliFlags.port}`);
 });

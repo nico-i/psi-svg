@@ -1,25 +1,36 @@
 # PageSpeed Insights SVG
 
+<br/>
+
 ![Example Insights for [https://inico.dev/](https://inico.dev/)](docs/img/inico-example.svg)
+
+This node module performs a [Google PageSpeed Insights analysis](https://developers.google.com/speed/pagespeed/insights/) on a given webpage and returns the result as an SVG.
+
+## Installation
+
+### npm
 
 ```bash
 npm i -g psi-svg
 ```
 
+[More info on `npm`](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm)
+
+### bun
+
 ```bash
 bun i -g psi-svg
 ```
+
+[More info on `bun`](https://bun.sh/)
+
+### yarn
 
 ```bash
 yarn global add psi-svg
 ```
 
-This node module performs a [Google PageSpeed Insights analysis](https://developers.google.com/speed/pagespeed/insights/) on a given webpage and returns the result as an SVG.
-
-## Prerequisites
-
-* [Node.js](https://nodejs.org/en/) and [npm](https://www.npmjs.com/) installed
-
+[More info on `yarn`](https://yarnpkg.com/)
 
 ## Usage
 
@@ -53,7 +64,7 @@ More info on npx can be found [here](https://docs.npmjs.com/cli/v7/commands/npx)
 
 ### Server
 
-To run the application as a server, start the server by running the module without any arguments:
+To run the application as a web server, start the server by running the module without any arguments:
 
 ```bash
 psi-svg
@@ -80,6 +91,7 @@ The server accepts similar parameters as the CLI tool:
 | `url`        | The URL to analyze.                               | `string`                                                               | -                                                      |
 | `strategy`   | The strategy to use for the analysis.             | `desktop` \| `mobile`                                                  | `mobile`                                               |
 | `categories` | The categories to include in the analysis as CSV. | `performance` \| `accessibility` \| `best-practices` \| `seo` \| `pwa` | `performance, accessibility, best-practices, seo, pwa` |
+| `legend`     | Whether to include the legend in the SVG.         | `true` \| `false`                                                      | `true`                                                 |
 
 This GET request for example
 
@@ -91,7 +103,7 @@ will return this SVG
 
 ![Example Insights for [https://www.example.com](https://www.example.com)](docs/img/example-example.svg)
 
-Note: this analysis ran on the 17. November of 2023; the example page may be prone to change
+*Note: this analysis ran on the 17. November of 2023; the example page may be prone to change and the results may not be accurate anymore.*
 
 ## Docker
 
@@ -121,6 +133,7 @@ This project improves the original project in the following ways:
 * Better SVG generation with individual SVG-files instead of inline SVG strings
 * SVG styling CSS moved to an individual file to facilitate intellisense and linting
 * Improved the file structure with Domain Driven Design (DDD)
+* Added the option to disable the legend
 * *TODO: Added automated tests*
 
 ## License

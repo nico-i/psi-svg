@@ -15,21 +15,31 @@ export class SvgService {
     }
   }
 
-  public generateInsightsSvg(insights: Insights): string {
+  public generateInsightsSvg(
+    insights: Insights,
+    showLegend: boolean = true
+  ): string {
     const numericScores = insights.getNumericScoresByCategory();
     const baseXOffset =
       500 -
-      (Object.values(numericScores).length +
-        (insights.getPWAScore() ? 1 : 0)) *
+      (Object.values(numericScores).length + (insights.getPWAScore() ? 1 : 0)) *
         100;
-    // Load base SVG
-    const baseSvg = fs.readFileSync("./assets/img/vector/base.svg", "utf8");
-    const dom = new JSDOM(baseSvg, { contentType: "image/svg+xml" });
+
+    // Create base SVG
+    const dom = new JSDOM("<!DOCTYPE html><html><body></body></html>");
     const { document } = dom.window;
-    const baseSvgElement = document.querySelector("svg");
+    const baseSvgElement = document.createElementNS(
+      "http://www.w3.org/2000/svg",
+      "svg"
+    );
+    baseSvgElement.setAttribute("width", 1000);
+    baseSvgElement.setAttribute("height", showLegend ? 330 : 330 - 76);
+    baseSvgElement.setAttribute("fill", "none");
+    baseSvgElement.setAttribute("xmlns:xlink", "http://www.w3.org/1999/xlink");
+
     // Add CSS
     const baseStyle = fs.readFileSync("./assets/css/style.css", "utf8");
-    const baseStyleElement = dom.window.document.createElement("style");
+    const baseStyleElement = document.createElement("style");
     baseStyleElement.textContent = baseStyle;
     baseSvgElement.innerHTML += baseStyleElement.outerHTML;
 
@@ -56,7 +66,16 @@ export class SvgService {
     gaugeSVGs.forEach((metricSvg) => {
       baseSvgElement.innerHTML += metricSvg;
     });
-    // Write to file if applicable
+
+    // Add legend
+    if (showLegend) {
+      baseSvgElement.innerHTML += fs.readFileSync(
+        "./assets/img/vector/legend.svg",
+        "utf8"
+      );
+    }
+
+    // Write to file
     if (this.outputDir) {
       fs.writeFileSync(
         `${this.outputDir}/insights.svg`,

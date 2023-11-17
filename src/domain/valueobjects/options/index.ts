@@ -2,10 +2,19 @@ import { validateWordCSVString } from "@util/helper";
 
 export class Options {
   private url: URL;
+  private showLegend: boolean;
   private strategy: InsightStrategy;
   private categories: InsightCategory[];
 
-  constructor(url: string, strategy?: string, categories?: string) {
+  constructor(
+    url: string,
+    showLegend?: boolean,
+    strategy?: string,
+    categories?: string
+  ) {
+    this.showLegend = true;
+    this.strategy = InsightStrategy.MOBILE;
+    this.categories = Object.values(InsightCategory);
     // url validation
     try {
       this.url = new URL(url);
@@ -15,8 +24,23 @@ export class Options {
       );
     }
 
+    if (showLegend !== undefined) {
+      this.showLegend = showLegend;
+    }
+
+    // strategy validation
+    if (strategy !== undefined) {
+      if (
+        !Object.values(InsightStrategy).includes(strategy as InsightStrategy)
+      ) {
+        throw new DOMException(`Invalid strategy: ${strategy}`);
+      }
+
+      this.strategy = strategy as InsightStrategy;
+    }
+
     // categories validation
-    if (categories) {
+    if (categories !== undefined) {
       if (validateWordCSVString(categories) === false) {
         throw new DOMException(
           "Invalid categories query parameter format. Expected comma separated values"
@@ -32,43 +56,18 @@ export class Options {
       });
 
       this.categories = categoriesSplit as InsightCategory[];
-    } else {
-      this.categories = Object.values(InsightCategory);
-    }
-
-    // strategy validation
-    if (strategy) {
-      if (
-        !Object.values(InsightStrategy).includes(strategy as InsightStrategy)
-      ) {
-        throw new DOMException(`Invalid strategy: ${strategy}`);
-      }
-
-      this.strategy = strategy as InsightStrategy;
-    } else {
-      this.strategy = InsightStrategy.MOBILE;
     }
   }
 
-  public getUrlAsString(): string {
-    return this.url.toString();
-  }
+  public getUrlAsString = (): string => this.url.toString();
+  public getUrl = (): URL => this.url;
 
-  public getUrl(): URL {
-    return this.url;
-  }
+  public getShowLegend = (): boolean => this.showLegend;
 
-  public getStrategy(): string {
-    return this.strategy;
-  }
+  public getStrategy = (): InsightStrategy => this.strategy;
 
-  public getCategoriesAsCSVString(): string {
-    return this.categories?.join(",");
-  }
-
-  public getCategories(): string[] {
-    return this.categories;
-  }
+  public getCategoriesAsCSVString = (): string => this.categories.join(",");
+  public getCategories = (): InsightCategory[] => this.categories;
 }
 
 export enum InsightStrategy {
