@@ -9,7 +9,7 @@ on:
 jobs:
   getpsresults:
     env:
-      URL_TO_ANALYZE: <YOUR URL HERE>
+      URL_TO_ANALYZE: http://example.com/
       RESULTS_DIR: ps-reports
     runs-on: ubuntu-latest
     steps:
