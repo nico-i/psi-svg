@@ -10,7 +10,7 @@ jobs:
   getpsresults:
     env:
       URL_TO_ANALYZE: <YOUR URL HERE>
-      RESULTSFOLDER: ps-reports
+      RESULTS_DIR: ps-reports
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2 # This is a premade github action
@@ -21,8 +21,8 @@ jobs:
         uses: actions/setup-node@v3
       - name: Create local changes
         run: | # Have to be sure a folder is present if not, make it
-          npx psi-svg $URL_TO_ANALYZE $RESULTSFOLDER/desktop.svg --strategy=desktop
-          npx psi-svg $URL_TO_ANALYZE $RESULTSFOLDER/mobile.svg --strategy=mobile
+          npx psi-svg $URL_TO_ANALYZE $RESULTS_DIR/desktop.svg --strategy=desktop
+          npx psi-svg $URL_TO_ANALYZE $RESULTS_DIR/mobile.svg --strategy=mobile
       - name: Commit files
         run: |
           git add .
