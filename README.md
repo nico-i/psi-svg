@@ -141,6 +141,10 @@ docker build -t psi-svg .
 docker run -p 3000:3000 psi-svg
 ```
 
+## Github Actions
+
+The application can also be run as a Github Action an example workflow can be found in [`.github/workflows/pagespeed.yml`](.github/workflows/pagespeed.yml). The results of which are visible in [`docs/img/`](docs/img/). To use the action, simply copy the workflow file to your repository and modify the value of the `URL_TO_ANALYZE` and `RESULTS_DIR` variables. Also ensure that the Github Action Workers have write access to the repository. You can configure this under `Settings > Code and automation > Actions > General > Workflow permissions`.
+
 ## Credits
 
 This project is based on [ankurparihar](https://github.com/ankurparihar)'s [readme-pagespeed-insights](https://github.com/ankurparihar/readme-pagespeed-insights).
