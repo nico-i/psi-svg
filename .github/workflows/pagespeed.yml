@@ -28,6 +28,7 @@ jobs:
 
     - name: Run npx command
       run: | # Have to be sure a folder is present if not, make it
+          mkdir -p ${RESULTS_DIR}
           psi-svg $URL_TO_ANALYZE $RESULTS_DIR/desktop.svg --strategy=desktop
           psi-svg $URL_TO_ANALYZE $RESULTS_DIR/mobile.svg --strategy=mobile
     - name: Commit files
