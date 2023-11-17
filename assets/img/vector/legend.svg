@@ -1,4 +1,4 @@
-<svg width="604" height="76" x="200" y="250">
+<svg width="604" height="76" x="200" y="250" id="legend">
     <g>
         <rect fill="none" id="canvas_background" height="80" width="604" y="-1" x="-1"/>
         <g display="none" overflow="visible" y="0" x="0" height="100%" width="100%" id="canvasGrid">

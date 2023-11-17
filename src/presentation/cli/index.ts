@@ -1,7 +1,8 @@
-#!/usr/bin/env node
+#!/usr/bin/env npx ts-node -r tsconfig-paths/register
 import { InsightsService } from "@domain/services/insights-service";
 import { SvgService } from "@domain/services/svg-service";
 import { Options } from "@domain/valueobjects/options";
+import { logger } from "@util/logger";
 
 const yargs = require("yargs");
 
@@ -39,7 +40,7 @@ const cliFlags = yargs
 
 const [url, outputDir] = cliFlags._;
 if (!url || !outputDir) {
-  console.error("Both URL and output path are required.");
+  logger.crit("Both URL and output path are required.");
   process.exit(1);
 }
 
@@ -53,11 +54,15 @@ const options = new Options(
   cliFlags.categories
 );
 
-console.log(`Options: ${JSON.stringify(options)}`);
-
-insightService.getPageSpeedInsights(options).then((insights) => {
-  svgService.generateInsightsSvg(insights, options.getShowLegend());
-  console.log(
-    `Successfully generated insights SVG in directory '${outputDir}'`
-  );
-});
+insightService
+  .getPageSpeedInsights(options)
+  .then((insights) => {
+    svgService.generateInsightsSvg(insights, options);
+    logger.info(
+      `Successfully generated insights SVG in directory '${outputDir}'`
+    );
+  })
+  .catch((e) => {
+    console.error(e);
+    process.exit(1);
+  });

@@ -1,10 +1,12 @@
 import { Insights, PWAMetric } from "@domain/valueobjects/insights";
 import {
   InsightCategory,
+  Options,
   getInsightCategoryText,
 } from "@domain/valueobjects/options";
 const { JSDOM } = require("jsdom");
 const fs = require("fs");
+require("dotenv").config();
 
 export class SvgService {
   private outputDir: string | undefined;
@@ -15,10 +17,7 @@ export class SvgService {
     }
   }
 
-  public generateInsightsSvg(
-    insights: Insights,
-    showLegend: boolean = true
-  ): string {
+  public generateInsightsSvg(insights: Insights, options: Options): string {
     const numericScores = insights.getNumericScoresByCategory();
     const baseXOffset =
       500 -
@@ -33,9 +32,13 @@ export class SvgService {
       "svg"
     );
     baseSvgElement.setAttribute("width", 1000);
-    baseSvgElement.setAttribute("height", showLegend ? 330 : 330 - 76);
+    baseSvgElement.setAttribute(
+      "height",
+      options.getShowLegend() ? 330 : 330 - 76
+    );
     baseSvgElement.setAttribute("fill", "none");
     baseSvgElement.setAttribute("xmlns:xlink", "http://www.w3.org/1999/xlink");
+    baseSvgElement.innerHTML += `<!-- PageSpeed Insights for ${options.getUrl()} -->`;
 
     // Add CSS
     const baseStyle = fs.readFileSync("./assets/css/style.css", "utf8");
@@ -68,7 +71,7 @@ export class SvgService {
     });
 
     // Add legend
-    if (showLegend) {
+    if (options.getShowLegend()) {
       baseSvgElement.innerHTML += fs.readFileSync(
         "./assets/img/vector/legend.svg",
         "utf8"

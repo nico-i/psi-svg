@@ -1,7 +1,9 @@
+#!/usr/bin/env npx ts-node -r tsconfig-paths/register
 import { InsightsService } from "@domain/services/insights-service";
 import { SvgService } from "@domain/services/svg-service";
 import { Options } from "@domain/valueobjects/options";
 import { validateWordCSVString } from "@util/helper";
+import { logger } from "@util/logger";
 import express from "express";
 const yargs = require("yargs");
 
@@ -19,7 +21,13 @@ const cliFlags = yargs
   .alias("h", "help").argv;
 
 app.get("/", (req, res) => {
-  console.log("Received request");
+  const handleError = (e: unknown) => {
+    if (e instanceof DOMException) {
+      res.status(400).send(e.message);
+    } else {
+      res.status(500).send("Internal server error");
+    }
+  };
 
   let insightsService;
 
@@ -79,23 +87,19 @@ app.get("/", (req, res) => {
 
     const svgService = new SvgService();
 
-    insightsService.getPageSpeedInsights(pageSpeedOptions).then((insights) => {
-      res.send(
-        svgService.generateInsightsSvg(
-          insights,
-          pageSpeedOptions.getShowLegend()
-        )
-      );
-    });
+    insightsService
+      .getPageSpeedInsights(pageSpeedOptions)
+      .then((insights) => {
+        res.send(svgService.generateInsightsSvg(insights, pageSpeedOptions));
+      })
+      .catch((e) => {
+        handleError(e);
+      });
   } catch (e) {
-    if (e instanceof DOMException) {
-      res.status(400).send(e.message);
-    } else {
-      res.status(500).send("Internal server error");
-    }
+    handleError(e);
   }
 });
 
 app.listen(cliFlags.port, () => {
-  console.log(`Server started. Listening on port ${cliFlags.port}`);
+  logger.info(`Server started. Listening on port ${cliFlags.port}`);
 });

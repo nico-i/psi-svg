@@ -1,6 +1,8 @@
 import { Insights } from "@domain/valueobjects/insights";
 import { InsightCategory, Options } from "@domain/valueobjects/options";
 import { calcPWAScore } from "@util/helper";
+import { logger } from "@util/logger";
+require("dotenv").config();
 
 export class InsightsService {
   private domainWhitelist: string[];
@@ -10,7 +12,7 @@ export class InsightsService {
   }
 
   async getPageSpeedInsights(options: Options): Promise<Insights> {
-    console.log(
+    logger.info(
       `Retrieving PageSpeed Insights for '${options.getUrlAsString()}'`
     );
     if (this.domainWhitelist.length > 0) {
@@ -19,7 +21,7 @@ export class InsightsService {
           "Cannot retrieve insights for this page as its domain is not whitelisted"
         );
       }
-      console.log("Domain is whitelisted, proceeding...");
+      logger.info("Domain is whitelisted, proceeding...");
     }
 
     const urls = this.buildPageSpeedInsightsUrls(options);
@@ -42,10 +44,10 @@ export class InsightsService {
           score = resJson.lighthouseResult.categories[category].score;
         }
 
-        console.log(
+        logger.info(
           `Retrieved insights for '${category}' category. Score: ${score}`
         );
-        
+
         return score;
       })
     );
