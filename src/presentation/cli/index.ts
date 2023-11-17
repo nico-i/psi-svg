@@ -9,7 +9,7 @@ const yargs = require("yargs");
 
 // Define the command line options
 const cliFlags = yargs
-  .usage("Usage: $0 <url> <output-dir> [options]")
+  .usage("Usage: $0 <url> <output> [options]")
   .positional("url", {
     describe: "The URL to fetch insights for",
     type: "string",
@@ -63,14 +63,14 @@ if (cliFlags.srv) {
     logger.info(`Server started. Listening on port ${cliFlags.port}`);
   });
 } else {
-  const [url, outputDir] = cliFlags._;
-  if (!url || !outputDir) {
+  const [url, output] = cliFlags._;
+  if (!url || !output) {
     logger.error("Both URL and output path are required.");
     process.exit(1);
   }
 
   const insightService = new InsightsService();
-  const svgService = new SvgService(outputDir);
+  const svgService = new SvgService(output);
 
   const options = new Options(
     url,
@@ -84,7 +84,7 @@ if (cliFlags.srv) {
     .then((insights) => {
       svgService.generateInsightsSvg(insights, options);
       logger.info(
-        `Successfully generated insights SVG in directory '${outputDir}'`
+        `Successfully generated insights SVG in directory '${output}'`
       );
       process.exit(0);
     })

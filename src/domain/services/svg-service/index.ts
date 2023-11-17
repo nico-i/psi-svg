@@ -9,11 +9,11 @@ const fs = require("fs");
 require("dotenv").config();
 
 export class SvgService {
-  private outputDir: string | undefined;
+  private outputPath: string | undefined;
 
   constructor(outputPath?: string) {
     if (outputPath) {
-      this.outputDir = outputPath;
+      this.outputPath = outputPath;
     }
   }
 
@@ -74,11 +74,8 @@ export class SvgService {
     }
 
     // Write to file
-    if (this.outputDir) {
-      fs.writeFileSync(
-        `${this.outputDir}/insights.svg`,
-        baseSvgElement.outerHTML
-      );
+    if (this.outputPath) {
+      fs.writeFileSync(this.outputPath, baseSvgElement.outerHTML);
     }
 
     return baseSvgElement.outerHTML;
