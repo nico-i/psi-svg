@@ -1,6 +1,6 @@
 {
   "name": "psi-svg",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "Generates a SVG of a given url's PageSpeed Insights statistics via a http endpoint or a cli command.",
   "main": "dist/presentation/cli/index.js",
   "scripts": {
@@ -30,7 +30,7 @@
     "node"
   ],
   "author": "Nico Ismaili",
-  "license": "ISC",
+  "license": "Apache-2.0",
   "bugs": {
     "url": "https://github.com/nico-i/pagespeed-insight-gen/issues"
   },
