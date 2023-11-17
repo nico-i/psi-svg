@@ -158,6 +158,7 @@ This project improves the original project in the following ways:
 * SVG styling CSS moved to an individual file to facilitate intellisense and linting
 * Improved the file structure with Domain Driven Design (DDD)
 * Added the option to disable the legend
+* Made Github action independent of running server
 * *TODO: Added automated tests*
 
 ## License
