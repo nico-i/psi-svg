@@ -1,6 +1,6 @@
 {
   "name": "psi-svg",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Generates a SVG of a given url's PageSpeed Insights statistics via a http endpoint or a cli command.",
   "main": "dist/presentation/cli/index.js",
   "scripts": {
