@@ -86,6 +86,7 @@ if (cliFlags.srv) {
       logger.info(
         `Successfully generated insights SVG in directory '${outputDir}'`
       );
+      process.exit(0);
     })
     .catch((e) => {
       console.error(e);

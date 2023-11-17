@@ -2,7 +2,7 @@
 
 <br/>
 
-![Example Insights for [https://inico.dev/](https://inico.dev/)](docs/img/inico-example.svg)
+![Example Insights for https://inico.dev/](docs/img/inico-insights.svg)
 
 This node module performs a [Google PageSpeed Insights analysis](https://developers.google.com/speed/pagespeed/insights/) on a given webpage and returns the result as an SVG.
 
@@ -97,12 +97,12 @@ The server accepts similar parameters as the CLI tool:
 This GET request for example
 
 ```bash
-curl http://localhost:3000/?url=https://www.example.com\&strategy=desktop\&categories=performance,accessibility,seo\&legend=false
+curl http://localhost:3000/?url=https://www.example.com\&strategy=desktop\&categories=performance,accessibility,seo\&legend=false > example-insights.svg
 ```
 
 will return this SVG
 
-![Example Insights for [https://www.example.com](https://www.example.com)](docs/img/example-example.svg)
+![Example Insights for https://www.example.com](./docs/img/example-insights.svg)
 
 *Note: this analysis ran on the 17. November of 2023; the example page may be prone to change and the results may not be accurate anymore.*
 

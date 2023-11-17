@@ -27,17 +27,12 @@ export class SvgService {
     // Create base SVG
     const dom = new JSDOM("<!DOCTYPE html><html><body></body></html>");
     const { document } = dom.window;
-    const baseSvgElement = document.createElementNS(
-      "http://www.w3.org/2000/svg",
-      "svg"
-    );
+    const baseSvgElement = document.createElement("svg");
     baseSvgElement.setAttribute("width", 1000);
-    baseSvgElement.setAttribute(
-      "height",
-      options.getShowLegend() ? 330 : 330 - 76
-    );
+    baseSvgElement.setAttribute("height", options.getShowLegend() ? 330 : 200);
     baseSvgElement.setAttribute("fill", "none");
     baseSvgElement.setAttribute("xmlns:xlink", "http://www.w3.org/1999/xlink");
+    baseSvgElement.setAttribute("xmlns", "http://www.w3.org/2000/svg");
     baseSvgElement.innerHTML += `<!-- PageSpeed Insights for ${options.getUrl()} -->`;
 
     // Add CSS
