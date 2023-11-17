@@ -156,7 +156,7 @@ This project improves the original project in the following ways:
 * Removed unnecessary options which previously bloated the code
 * Better SVG generation with individual SVG-files instead of inline SVG strings
 * SVG styling CSS moved to an individual file to facilitate intellisense and linting
-* Improved the file structure with Domain Driven Design (DDD)
+* Improved the file structure and code coupling with Domain Driven Design (DDD)
 * Added the option to disable the legend
 * Made Github action independent of running server
 * *TODO: Added automated tests*

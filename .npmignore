@@ -1,6 +1,7 @@
 docs/**/*
 src/**/*
 .git/**/*
+.github/**/*
 
 Dockerfile
 example.env
