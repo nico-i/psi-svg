@@ -1,3 +1,4 @@
+const { optimize } = require('svgo');
 import { Insights, PWAMetric } from "@domain/valueobjects/insights";
 import {
   InsightCategory,
@@ -81,9 +82,23 @@ export class SvgService {
       );
     }
 
+    const result = optimize(baseSvgElement.outerHTML, {
+      multipass: true,
+      plugins: [
+        {
+          name: "preset-default",
+          params: {
+            overrides: {
+              removeViewBox: false
+            }
+          }
+        }
+      ]
+    });
+    
     // Write to file
     if (this.outputPath) {
-      fs.writeFileSync(this.outputPath, baseSvgElement.outerHTML);
+      fs.writeFileSync(this.outputPath, result.data);
     }
 
     return baseSvgElement.outerHTML;
