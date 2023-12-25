@@ -1,4 +1,4 @@
-const { optimize } = require('svgo');
+import { optimize } from 'svgo';
 import { Insights, PWAMetric } from "@domain/valueobjects/insights";
 import {
   InsightCategory,
