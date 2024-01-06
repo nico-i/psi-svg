@@ -139,6 +139,26 @@ docker run -p 3000:3000 psi-svg
 
 The application can also be run as a Github Action an example workflow can be found in [`.github/workflows/pagespeed.yml`](.github/workflows/pagespeed.yml). The results of which are visible in [`docs/img/`](docs/img/). To use the action, simply copy the workflow file to your repository and modify the value of the `URL_TO_ANALYZE` and `RESULTS_DIR` variables. Also ensure that the Github Action Workers have write access to the repository. You can configure this under `Settings > Code and automation > Actions > General > Workflow permissions`.
 
+## Development
+
+This project uses [Node.js](https://nodejs.org/en/) and [Typescript](https://www.typescriptlang.org/) for development. To get started, clone the repository and install the dependencies:
+
+```bash
+git clone https://www.github.com/nico-i/psi-svg
+cd psi-svg
+npm install
+```
+
+To run the application, use the following command:
+
+```bash
+npm run start
+```
+
+This will start the web server on port 3000.
+
+For development I recommend using the API testing tool [bruno](https://github.com/usebruno/bruno), which you can point to the [`/.bruno/`](./.bruno/) directory of this repo. It contains some helpful requests to test the application.
+
 ## Credits
 
 This project is based on [ankurparihar](https://github.com/ankurparihar)'s [readme-pagespeed-insights](https://github.com/ankurparihar/readme-pagespeed-insights).

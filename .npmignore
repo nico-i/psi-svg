@@ -2,6 +2,7 @@ docs/**/*
 src/**/*
 .git/**/*
 .github/**/*
+.bruno/**/*
 
 Dockerfile
 example.env
