@@ -1,4 +1,4 @@
-import { PWAMetric } from "@domain/valueobjects/insights";
+import { PWAMetric } from "@domain";
 
 export function validateWordCSVString(csvString: string): boolean {
   const csvRegex = /^[\w-]+(,[\w-]+)*$/; // matches "word" or "word1,word2,word3"
