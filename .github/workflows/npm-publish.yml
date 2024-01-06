@@ -21,6 +21,7 @@ jobs:
   publish-npm:
     needs: build
     runs-on: ubuntu-latest
+    environment: npm-publish
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
