@@ -1,15 +1,18 @@
 /** @type {import('ts-jest').JestConfigWithTsJest} */
 
 const { pathsToModuleNameMapper } = require("ts-jest");
-const { compilerOptions } = require("./tsconfig");
+import type { JestConfigWithTsJest } from "ts-jest";
+import { compilerOptions } from "./tsconfig.json";
 
-module.exports = {
+const jestConfig: JestConfigWithTsJest = {
   preset: "ts-jest",
   testEnvironment: "node",
   roots: ["<rootDir>"],
-  modulePaths: [compilerOptions.baseUrl], // <-- This will be set to 'baseUrl' value
+  modulePaths: [compilerOptions.baseUrl],
   moduleNameMapper: pathsToModuleNameMapper(compilerOptions.paths),
   automock: false,
   modulePathIgnorePatterns: ["<rootDir>/dist/"],
   setupFiles: ["./setupJest.js"],
 };
+
+export default jestConfig;
