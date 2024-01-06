@@ -10,29 +10,23 @@ This node module performs a [Google PageSpeed Insights analysis](https://develop
 
 ## Installation
 
-### npm
+### [npm](https://www.npmjs.com/)
 
 ```bash
 npm i -g psi-svg
 ```
 
-[More info on `npm`](https://www.npmjs.com/)
-
-### bun
+### [bun](https://bun.sh/)
 
 ```bash
 bun i -g psi-svg
 ```
 
-[More info on `bun`](https://bun.sh/)
-
-### yarn
+### [yarn](https://yarnpkg.com/)
 
 ```bash
 yarn global add psi-svg
 ```
-
-[More info on `yarn`](https://yarnpkg.com/)
 
 ## Usage
 
