@@ -1,12 +1,9 @@
-import { InsightCategory } from "@domain";
-
 export class Insights {
-  private numericScores: Record<InsightCategory, number> = {} as Record<
-    InsightCategory,
-    number
-  >;
-
-  private pwaScore: PWAMetric | undefined = undefined;
+  private _performanceScore: number;
+  private _a11yScore?: number;
+  private _bestPracticesScore?: number;
+  private _seoScore?: number;
+  private _pwaScore: PWAMetric | undefined = undefined;
 
   constructor(
     performanceScore: number,
@@ -15,48 +12,46 @@ export class Insights {
     seoScore?: number,
     pwaScore?: number
   ) {
-    this.numericScores[InsightCategory.PERFORMANCE] = performanceScore * 100;
+    this._performanceScore = Math.round(performanceScore * 100);
 
-    if (a11yScore) {
-      this.numericScores[InsightCategory.ACCESSIBILITY] = a11yScore * 100;
+    if (a11yScore !== undefined) {
+      this._a11yScore = Math.round(a11yScore * 100);
     }
 
-    if (bestPracticesScore) {
-      this.numericScores[InsightCategory.BEST_PRACTICES] =
-        bestPracticesScore * 100;
+    if (bestPracticesScore !== undefined) {
+      this._bestPracticesScore = Math.round(bestPracticesScore * 100);
     }
 
-    if (seoScore) {
-      this.numericScores[InsightCategory.SEO] = seoScore * 100;
+    if (seoScore !== undefined) {
+      this._seoScore = Math.round(seoScore * 100);
     }
 
-    if (pwaScore) {
-      this.pwaScore = this.parsePWAScore(pwaScore);
+    if (pwaScore !== undefined) {
+      const pwaScoreStr = pwaScore.toString();
+      if (!Object.keys(PWAMetricByScore).includes(pwaScoreStr)) {
+        throw new DOMException(`Invalid PWA score: ${pwaScore}`);
+      }
+      this._pwaScore = PWAMetricByScore[pwaScore];
     }
   }
-
-  public getNumericScoresByCategory(): Record<InsightCategory, number> {
-    return this.numericScores;
+  get performanceScore(): number {
+    return this._performanceScore;
   }
 
-  public getPWAScore(): PWAMetric | undefined {
-    return this.pwaScore;
+  get a11yScore(): number | undefined {
+    return this._a11yScore;
   }
 
-  private parsePWAScore(pwaScore: number): PWAMetric {
-    const metricByScore: Record<number, PWAMetric> = {
-      0: PWAMetric.NA,
-      1: PWAMetric.RELIABLE,
-      2: PWAMetric.INSTALLABLE,
-      3: PWAMetric.OPTIMIZED,
-      7: PWAMetric.ALL,
-    };
+  get bestPracticesScore(): number | undefined {
+    return this._bestPracticesScore;
+  }
 
-    if (!metricByScore[pwaScore]) {
-      throw new DOMException(`Invalid PWA score: ${pwaScore}`);
-    }
+  get seoScore(): number | undefined {
+    return this._seoScore;
+  }
 
-    return metricByScore[pwaScore];
+  get pwaScore(): PWAMetric | undefined {
+    return this._pwaScore;
   }
 }
 
@@ -67,3 +62,11 @@ export enum PWAMetric {
   OPTIMIZED = "pwa-optimized",
   ALL = "all",
 }
+
+export const PWAMetricByScore: Record<string, PWAMetric> = {
+  "0": PWAMetric.NA,
+  "1": PWAMetric.RELIABLE,
+  "2": PWAMetric.INSTALLABLE,
+  "3": PWAMetric.OPTIMIZED,
+  "7": PWAMetric.ALL,
+};

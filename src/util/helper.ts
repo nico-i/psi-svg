@@ -1,8 +1,23 @@
-import { PWAMetric } from "@domain";
+import { Options, PWAMetric } from "@domain";
 
 export function validateWordCSVString(csvString: string): boolean {
   const csvRegex = /^[\w-]+(,[\w-]+)*$/; // matches "word" or "word1,word2,word3"
   return csvRegex.test(csvString);
+}
+
+export function buildPageSpeedInsightsUrls(
+  options: Options
+): Record<string, string> {
+  const url = new URL(
+    "https://www.googleapis.com/pagespeedonline/v5/runPagespeed"
+  );
+  url.searchParams.append("url", options.url.toString());
+  url.searchParams.append("strategy", options.strategy);
+  return options.categories.reduce((acc, category: string) => {
+    url.searchParams.set("category", category);
+    acc[category] = url.toString();
+    return acc;
+  }, {} as Record<string, string>);
 }
 
 export function calcPWAScore(pwaLighthouseResult: any): number {

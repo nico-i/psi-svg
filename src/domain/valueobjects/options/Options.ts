@@ -1,10 +1,10 @@
 import { validateWordCSVString } from "@util";
 
 export class Options {
-  private url: URL;
-  private showLegend: boolean;
-  private strategy: InsightStrategy;
-  private categories: InsightCategory[];
+  private _url: URL;
+  private _showLegend: boolean;
+  private _strategy: InsightStrategy;
+  private _categories: InsightCategory[];
 
   constructor(
     url: string,
@@ -12,12 +12,12 @@ export class Options {
     strategy?: string,
     categories?: string
   ) {
-    this.showLegend = true;
-    this.strategy = InsightStrategy.MOBILE;
-    this.categories = Object.values(InsightCategory);
+    this._showLegend = true;
+    this._strategy = InsightStrategy.MOBILE;
+    this._categories = Object.values(InsightCategory);
     // url validation
     try {
-      this.url = new URL(url);
+      this._url = new URL(url);
     } catch (e) {
       throw new DOMException(
         "Could not parse url query parameter to URL object"
@@ -26,7 +26,7 @@ export class Options {
 
     if (showLegend !== undefined) {
       try {
-        this.showLegend = JSON.parse(showLegend);
+        this._showLegend = JSON.parse(showLegend);
       } catch (e) {
         throw new DOMException(
           "Failed to parse legend query parameter to boolean"
@@ -42,7 +42,7 @@ export class Options {
         throw new DOMException(`Invalid strategy: ${strategy}`);
       }
 
-      this.strategy = strategy as InsightStrategy;
+      this._strategy = strategy as InsightStrategy;
     }
 
     // categories validation
@@ -61,19 +61,28 @@ export class Options {
         }
       });
 
-      this.categories = categoriesSplit as InsightCategory[];
+      this._categories = categoriesSplit as InsightCategory[];
     }
   }
+  get showLegend(): boolean {
+    return this._showLegend;
+  }
 
-  public getUrlAsString = (): string => this.url.toString();
-  public getUrl = (): URL => this.url;
+  get strategy(): InsightStrategy {
+    return this._strategy;
+  }
 
-  public getShowLegend = (): boolean => this.showLegend;
+  get categories(): InsightCategory[] {
+    return this._categories;
+  }
 
-  public getStrategy = (): InsightStrategy => this.strategy;
+  get url(): URL {
+    return this._url;
+  }
 
-  public getCategoriesAsCSVString = (): string => this.categories.join(",");
-  public getCategories = (): InsightCategory[] => this.categories;
+  get categoriesAsCSVString(): string {
+    return this._categories.join(",");
+  }
 }
 
 export enum InsightStrategy {

@@ -25,10 +25,30 @@ export class SvgService {
   }
 
   public generateInsightsSvg(insights: Insights, options: Options): string {
-    const numericScores = insights.getNumericScoresByCategory();
+    const {
+      performanceScore,
+      a11yScore,
+      bestPracticesScore,
+      seoScore,
+      pwaScore,
+    } = insights;
+
+    const numericScores: Record<string, number> = {
+      [InsightCategory.PERFORMANCE]: performanceScore,
+    };
+    if (a11yScore) {
+      numericScores[InsightCategory.ACCESSIBILITY] = a11yScore;
+    }
+    if (bestPracticesScore) {
+      numericScores[InsightCategory.BEST_PRACTICES] = bestPracticesScore;
+    }
+    if (seoScore) {
+      numericScores[InsightCategory.SEO] = seoScore;
+    }
+
     const baseXOffset =
       500 -
-      (Object.values(numericScores).length + (insights.getPWAScore() ? 1 : 0)) *
+      (Object.values(numericScores).length + (pwaScore !== undefined ? 1 : 0)) *
         100;
 
     // Create base SVG
@@ -36,11 +56,11 @@ export class SvgService {
     const { document } = dom.window;
     const baseSvgElement = document.createElement("svg");
     baseSvgElement.setAttribute("width", 1000);
-    baseSvgElement.setAttribute("height", options.getShowLegend() ? 330 : 200);
+    baseSvgElement.setAttribute("height", options.showLegend ? 330 : 200);
     baseSvgElement.setAttribute("fill", "none");
     baseSvgElement.setAttribute("xmlns:xlink", "http://www.w3.org/1999/xlink");
     baseSvgElement.setAttribute("xmlns", "http://www.w3.org/2000/svg");
-    baseSvgElement.innerHTML += `<!-- PageSpeed Insights for ${options.getUrl()} -->`;
+    baseSvgElement.innerHTML += `<!-- PageSpeed Insights for ${options.url} -->`;
 
     // Add CSS
     const baseStyle = fs.readFileSync(
@@ -62,7 +82,6 @@ export class SvgService {
         )
       );
     });
-    const pwaScore = insights.getPWAScore();
     if (pwaScore) {
       gaugeSVGs.push(
         this.getPWASvg(
@@ -76,13 +95,14 @@ export class SvgService {
     });
 
     // Add legend
-    if (options.getShowLegend()) {
+    if (options.showLegend) {
       baseSvgElement.innerHTML += fs.readFileSync(
         `${this.assetsDir}/img/vector/legend.svg`,
         "utf8"
       );
     }
 
+    // Optimize SVG
     const result = optimize(baseSvgElement.outerHTML, {
       multipass: true,
       plugins: [

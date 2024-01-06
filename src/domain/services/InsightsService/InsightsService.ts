@@ -1,20 +1,17 @@
 import { InsightCategory, Insights, Options } from "@domain";
-import { calcPWAScore, logger } from "@util";
+import { buildPageSpeedInsightsUrls, calcPWAScore, logger } from "@util";
 require("dotenv").config();
 
 export class InsightsService {
-  private domainWhitelist: string[];
+  private hostnameWhitelist: string[];
 
-  constructor(domainWhitelist?: string[]) {
-    this.domainWhitelist = domainWhitelist ?? [];
+  constructor(hostnameWhitelist?: string[]) {
+    this.hostnameWhitelist = hostnameWhitelist ?? [];
   }
 
   async getPageSpeedInsights(options: Options): Promise<Insights> {
-    logger.info(
-      `Retrieving PageSpeed Insights for '${options.getUrlAsString()}'`
-    );
-    if (this.domainWhitelist.length > 0) {
-      if (!this.domainWhitelist.includes(options.getUrl().hostname)) {
+    if (this.hostnameWhitelist.length > 0) {
+      if (!this.hostnameWhitelist.includes(options.url.hostname)) {
         throw new DOMException(
           "Cannot retrieve insights for this page as its domain is not whitelisted"
         );
@@ -22,7 +19,11 @@ export class InsightsService {
       logger.info("Domain is whitelisted, proceeding...");
     }
 
-    const urls = this.buildPageSpeedInsightsUrls(options);
+    logger.info(
+      `Retrieving PageSpeed Insights for '${options.url.toString()}'`
+    );
+
+    const urls = buildPageSpeedInsightsUrls(options);
 
     const pageSpeedScores = await Promise.all(
       Object.entries(urls).map(async ([category, url]) => {
@@ -39,7 +40,14 @@ export class InsightsService {
         if (category === InsightCategory.PWA) {
           score = calcPWAScore(resJson.lighthouseResult);
         } else {
-          score = resJson.lighthouseResult.categories[category].score ?? -1;
+          const resScore = resJson.lighthouseResult.categories[category].score;
+          if (typeof resScore === "number") {
+            score = resJson.lighthouseResult.categories[category].score;
+          } else {
+            throw new DOMException(
+              `Score for '${category}' category is not a number}`
+            );
+          }
         }
 
         logger.info(
@@ -50,10 +58,11 @@ export class InsightsService {
       })
     );
 
-    const scoresByCategory = pageSpeedScores.reduce((acc, score, i) => {
-      acc[options.getCategories()[i]] = score;
-      return acc;
-    }, {} as Record<string, number>);
+    const scoresByCategory: Record<InsightCategory, number> =
+      pageSpeedScores.reduce((acc, score, i) => {
+        acc[options.categories[i]] = score;
+        return acc;
+      }, {} as Record<string, number>);
 
     return new Insights(
       scoresByCategory[InsightCategory.PERFORMANCE],
@@ -62,18 +71,5 @@ export class InsightsService {
       scoresByCategory[InsightCategory.SEO],
       scoresByCategory[InsightCategory.PWA]
     );
-  }
-
-  private buildPageSpeedInsightsUrls(options: Options): Record<string, string> {
-    const url = new URL(
-      "https://www.googleapis.com/pagespeedonline/v5/runPagespeed"
-    );
-    url.searchParams.append("url", options.getUrlAsString());
-    url.searchParams.append("strategy", options.getStrategy());
-    return options.getCategories().reduce((acc, category: string) => {
-      url.searchParams.set("category", category);
-      acc[category] = url.toString();
-      return acc;
-    }, {} as Record<string, string>);
   }
 }
