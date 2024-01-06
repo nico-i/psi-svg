@@ -1,10 +1,10 @@
-import { optimize } from 'svgo';
 import { Insights, PWAMetric } from "@domain/valueobjects/insights";
 import {
   InsightCategory,
   Options,
   getInsightCategoryText,
 } from "@domain/valueobjects/options";
+import { optimize } from "svgo";
 const { JSDOM } = require("jsdom");
 const fs = require("fs");
 const path = require("path");
@@ -89,13 +89,13 @@ export class SvgService {
           name: "preset-default",
           params: {
             overrides: {
-              removeViewBox: false
-            }
-          }
-        }
-      ]
+              removeViewBox: false,
+            },
+          },
+        },
+      ],
     });
-    
+
     // Write to file
     if (this.outputPath) {
       fs.writeFileSync(this.outputPath, result.data);
@@ -136,7 +136,7 @@ export class SvgService {
     gaugeSVGElement.setAttribute("x", xOffset);
 
     const scoreTextElement = gaugeDocument.querySelector("#score");
-    scoreTextElement.textContent = score.toString();
+    scoreTextElement.textContent = Math.floor(score).toString();
 
     const categoryTextElement = gaugeDocument.querySelector("#category");
     categoryTextElement.textContent = getInsightCategoryText(category);

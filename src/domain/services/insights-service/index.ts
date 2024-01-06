@@ -31,17 +31,17 @@ export class InsightsService {
         const res = await fetch(url);
         const resJson = await res.json();
 
-        if (!resJson?.lighthouseResult?.categories?.[category].score) {
+        if (!resJson?.lighthouseResult?.categories?.[category]?.score) {
           throw new DOMException(
             `Could not retrieve insights for '${category}' category}`
           );
         }
 
-        let score;
+        let score: number;
         if (category === InsightCategory.PWA) {
           score = calcPWAScore(resJson.lighthouseResult);
         } else {
-          score = resJson.lighthouseResult.categories[category].score;
+          score = resJson.lighthouseResult.categories[category].score ?? -1;
         }
 
         logger.info(
